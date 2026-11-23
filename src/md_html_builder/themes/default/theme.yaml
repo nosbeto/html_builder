@@ -1,0 +1,4 @@
+name: default
+description: Clean, modern sans-serif with a crisp blue accent (light and dark).
+code_style: default
+code_style_dark: github-dark

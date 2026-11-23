@@ -1,0 +1,4 @@
+name: academic
+description: Serif, journal-style typography on warm paper; justified text, booktabs tables.
+code_style: sas
+code_style_dark: monokai

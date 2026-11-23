@@ -1,0 +1,50 @@
+[build-system]
+requires = ['setuptools>=69', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'md-html-builder'
+version = '0.1.0'
+description = 'Convert Markdown files into customisable, themeable, styled HTML pages.'
+readme = 'README.md'
+requires-python = '>=3.11'
+license = { text = 'MIT' }
+dependencies = [
+    'markdown-it-py>=4.1',
+    'mdit-py-plugins>=0.5',
+    'pygments>=2.17',
+    'pyyaml>=6.0',
+]
+
+[project.optional-dependencies]
+pdf = ['weasyprint>=62']
+dev = ['pytest>=8', 'ruff>=0.6']
+
+[project.scripts]
+md2html = 'md_html_builder.cli:main'
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[tool.setuptools.package-data]
+md_html_builder = ['themes/**/*', 'templates/*.html', 'py.typed']
+
+[tool.pytest.ini_options]
+testpaths = ['tests']
+addopts = '-ra'
+
+[tool.ruff]
+line-length = 100
+target-version = 'py311'
+src = ['src', 'tests']
+
+[tool.ruff.lint]
+select = ['E', 'F', 'W', 'I', 'B', 'UP', 'Q', 'SIM']
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = 'single'
+multiline-quotes = 'double'
+docstring-quotes = 'double'
+
+[tool.ruff.format]
+quote-style = 'single'

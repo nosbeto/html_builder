@@ -1,0 +1,177 @@
+/*
+ * academic - a serif, journal-style theme on warm paper with burgundy accents.
+ *
+ * Justified, hyphenated text; centred title; booktabs-style tables (rules above and below,
+ * no vertical lines); italic quotations; an asterism for horizontal rules.
+ * Built on themes/_shared/base.css; every value is a CSS custom property.
+ * All colour pairs meet WCAG 2.1 AA contrast (checked by the test-suite).
+ */
+:root {
+  --mdh-font-body: Charter, 'Bitstream Charter', 'Sitka Text', 'Iowan Old Style',
+    'Palatino Linotype', Palatino, 'Book Antiqua', Cambria, Georgia, serif;
+  --mdh-font-heading: var(--mdh-font-body);
+  --mdh-font-code: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+  --mdh-font-size: 16.5px;
+  --mdh-line-height: 1.6;
+  --mdh-content-max-width: 42rem;
+  --mdh-sidebar-width: 15rem;
+  --mdh-heading-weight: 600;
+  --mdh-heading-letter-spacing: 0;
+  --mdh-h1-size: 2em;
+  --mdh-h2-size: 1.45em;
+  --mdh-h3-size: 1.2em;
+  --mdh-h4-size: 1.05em;
+  --mdh-code-font-size: 0.82em;
+  --mdh-text-align: justify;
+  --mdh-hyphens: auto;
+  --mdh-block-spacing: 0.9em;
+  --mdh-radius: 3px;
+  --mdh-sheet-shadow: 0 1px 1px rgb(60 40 20 / 0.08), 0 10px 30px rgb(60 40 20 / 0.14);
+}
+
+/* Light palette (also the default). */
+:root {
+  --mdh-color-bg: #fffdf8;
+  --mdh-color-surface: #f6f1e7;
+  --mdh-color-text: #23201b;
+  --mdh-color-muted: #5e584e;
+  --mdh-color-heading: #16130f;
+  --mdh-color-link: #8b1e2d;
+  --mdh-color-accent: #8b1e2d;
+  --mdh-color-border: #dcd3c2;
+  --mdh-color-code-bg: #f4efe4;
+  --mdh-color-code-text: #2b2823;
+  --mdh-color-table-header-bg: #fffdf8;
+  --mdh-color-table-stripe: #fffdf8;
+  --mdh-color-blockquote-border: #8b1e2d;
+  --mdh-color-header-bg: #fffdf8;
+  --mdh-color-header-text: #3a352d;
+  --mdh-color-footer-bg: #fffdf8;
+  --mdh-color-footer-text: #5e584e;
+  --mdh-color-desk: #e6dfd2;
+  --mdh-color-selection: #f0d6d9;
+  --mdh-color-mark: #f8e7a1;
+  --mdh-color-mark-text: #23201b;
+  --mdh-color-focus: #8b1e2d;
+  --mdh-color-note: #1d5a85;
+  --mdh-color-tip: #2d6a38;
+  --mdh-color-important: #673a8c;
+  --mdh-color-warning: #835400;
+  --mdh-color-caution: #a1232e;
+}
+
+/* Dark palette: data-theme="dark", and "auto" when the OS prefers dark on screen. */
+:root[data-theme="dark"] {
+  --mdh-color-bg: #1b1916;
+  --mdh-color-surface: #24211d;
+  --mdh-color-text: #e9e3d7;
+  --mdh-color-muted: #aaa293;
+  --mdh-color-heading: #f5f0e6;
+  --mdh-color-link: #eaa0a9;
+  --mdh-color-accent: #e58e99;
+  --mdh-color-border: #3b362f;
+  --mdh-color-code-bg: #24211d;
+  --mdh-color-code-text: #e9e3d7;
+  --mdh-color-table-header-bg: #1b1916;
+  --mdh-color-table-stripe: #1b1916;
+  --mdh-color-blockquote-border: #e58e99;
+  --mdh-color-header-bg: #1b1916;
+  --mdh-color-header-text: #d9d2c4;
+  --mdh-color-footer-bg: #1b1916;
+  --mdh-color-footer-text: #aaa293;
+  --mdh-color-desk: #100f0d;
+  --mdh-color-selection: #4a2a2f;
+  --mdh-color-mark: #5b4a12;
+  --mdh-color-mark-text: #f5f0e6;
+  --mdh-color-focus: #eaa0a9;
+  --mdh-color-note: #8cc4ea;
+  --mdh-color-tip: #8fd19e;
+  --mdh-color-important: #c8a8ea;
+  --mdh-color-warning: #e6bb5c;
+  --mdh-color-caution: #f19999;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --mdh-color-bg: #1b1916;
+    --mdh-color-surface: #24211d;
+    --mdh-color-text: #e9e3d7;
+    --mdh-color-muted: #aaa293;
+    --mdh-color-heading: #f5f0e6;
+    --mdh-color-link: #eaa0a9;
+    --mdh-color-accent: #e58e99;
+    --mdh-color-border: #3b362f;
+    --mdh-color-code-bg: #24211d;
+    --mdh-color-code-text: #e9e3d7;
+    --mdh-color-table-header-bg: #1b1916;
+    --mdh-color-table-stripe: #1b1916;
+    --mdh-color-blockquote-border: #e58e99;
+    --mdh-color-header-bg: #1b1916;
+    --mdh-color-header-text: #d9d2c4;
+    --mdh-color-footer-bg: #1b1916;
+    --mdh-color-footer-text: #aaa293;
+    --mdh-color-desk: #100f0d;
+    --mdh-color-selection: #4a2a2f;
+    --mdh-color-mark: #5b4a12;
+    --mdh-color-mark-text: #f5f0e6;
+    --mdh-color-focus: #eaa0a9;
+    --mdh-color-note: #8cc4ea;
+    --mdh-color-tip: #8fd19e;
+    --mdh-color-important: #c8a8ea;
+    --mdh-color-warning: #e6bb5c;
+    --mdh-color-caution: #f19999;
+  }
+}
+
+/* Flourishes */
+.markdown-body > h1:first-child {
+  margin-bottom: 1.2em;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.markdown-body h2 { border-bottom: 0; padding-bottom: 0; }
+.markdown-body h3 { font-style: italic; font-weight: 500; }
+.markdown-body h6 { font-variant: small-caps; text-transform: none; letter-spacing: 0.05em; }
+.markdown-body p { text-wrap: pretty; }
+.markdown-body blockquote {
+  font-style: italic;
+  border-left-width: 2px;
+  padding-left: 1.4em;
+}
+.markdown-body hr {
+  border: 0;
+  height: auto;
+  text-align: center;
+  color: var(--mdh-color-muted);
+}
+.markdown-body hr:not(.footnotes-sep)::before { content: '\2042'; font-size: 1.2em; }
+.markdown-body hr.footnotes-sep { border-top: 1px solid var(--mdh-color-border); }
+
+.markdown-body .mdh-table-wrap { --mdh-table-frame: none; border: 0; border-radius: 0; }
+.markdown-body table:not(.highlighttable) {
+  border-top: 1.5px solid var(--mdh-color-heading);
+  border-bottom: 1.5px solid var(--mdh-color-heading);
+}
+.markdown-body table:not(.highlighttable) :is(th, td) + :is(th, td) { border-left: 0; }
+.markdown-body table:not(.highlighttable) :is(th, td) { border-bottom: 0; }
+.markdown-body table:not(.highlighttable) thead th {
+  border-bottom: 1px solid var(--mdh-color-heading);
+  font-weight: 600;
+}
+
+.markdown-body .markdown-alert { border-left-width: 2px; }
+.markdown-body figcaption { font-style: italic; }
+.markdown-body .footnotes { font-size: 0.85em; }
+.mdh-header-inner, .mdh-running-header .mdh-header-inner { font-variant: small-caps; letter-spacing: 0.04em; }
+
+/* Dark mode: a hairline edge keeps the sheet visible on the dark desk. */
+:root[data-theme="dark"] {
+  --mdh-sheet-shadow: 0 0 0 1px #3b362f, 0 12px 32px rgb(0 0 0 / 0.5);
+}
+@media screen and (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --mdh-sheet-shadow: 0 0 0 1px #3b362f, 0 12px 32px rgb(0 0 0 / 0.5);
+  }
+}

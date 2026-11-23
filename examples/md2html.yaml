@@ -1,0 +1,59 @@
+# Example configuration for md2html. Run from the project root:
+#   md2html examples/docs -c examples/md2html.yaml
+title: md-html-builder examples
+lang: en
+author: md-html-builder
+
+style:
+  theme: default        # default | academic | midnight | minimal | path/to/theme(.css)
+  mode: auto            # light | dark | auto (auto is always printed light)
+  # Web fonts (https only), e.g. Google Fonts; then name the family in font_body:
+  # font_url: ['https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap']
+  font_body: "system-ui, -apple-system, 'Segoe UI', sans-serif"
+  font_size: 16px
+  line_height: '1.65'
+  code_style: default   # any Pygments style (md2html --list-code-styles)
+  code_style_dark: monokai
+  colors:
+    accent: '#0b7285'
+    link: '#0b7285'
+  colors_dark:
+    accent: '#66d9e8'
+    link: '#66d9e8'
+
+layout:
+  view: paged           # paged (document as a sheet of paper, like the PDF) | web
+  max_width: 50rem      # web view only; the paged view uses the page size below
+  toc: right            # none | left | right | top
+  toc_depth: 3
+  align: center
+  navigation: true
+
+header:
+  enabled: true
+  template: '<strong>{site_title}</strong> &middot; {title}'
+
+footer:
+  enabled: true
+  template: 'Built {build_date} &middot; {author}'
+
+page_numbers:
+  enabled: true
+  format: 'Page {page} of {total_pages}'
+  print: true           # number printed/PDF pages with CSS counters
+  position: right       # left | center | right (bottom page margin)
+
+page:                   # paper used by the paged view, printing and PDF export
+  size: A4              # A3 | A4 | A5 | B5 | Letter | Legal | Tabloid
+  orientation: portrait # portrait | landscape
+  margin: 20mm 18mm     # CSS margin shorthand; header/footer print inside it
+  print_link_urls: false
+
+markdown:
+  raw_html: true
+  safe_mode: false
+  heading_permalinks: true
+
+build:
+  output: output        # relative to this file
+  assets: copy          # copy | rewrite | embed | keep

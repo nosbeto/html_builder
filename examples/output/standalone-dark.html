@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-toc="left">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="md-html-builder 0.1.0">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Every Markdown feature supported by md-html-builder.">
+<meta name="author" content="md-html-builder">
+<title>Showcase</title>
+<style id="mdh-styles">
+/* ---- base ---- */
+/*
+ * md-html-builder shared base stylesheet.
+ *
+ * Every built-in theme is layered on top of this file. It implements the page layouts
+ * (the "paged" sheet-of-paper view and the "web" view), every Markdown component, the
+ * accessibility helpers and the print stylesheet. All visual decisions are read from
+ * CSS custom properties so themes and users can change them without touching selectors.
+ *
+ * Sections:
+ *   1. Tokens (defaults; themes override)      6. Header, footer, page number
+ *   2. Document & typography                   7. Navigation, TOC, pager
+ *   3. Accessibility helpers                   8. Markdown components
+ *   4. Web view layout                         9. Small screens
+ *   5. Paged view (sheet of paper)            10. Print / PDF
+ */
+
+/* 1. Tokens ------------------------------------------------------------------------- */
+:root {
+  --mdh-font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --mdh-font-heading: var(--mdh-font-body);
+  --mdh-font-code: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Code', 'JetBrains Mono',
+    Menlo, Consolas, 'Liberation Mono', monospace;
+  --mdh-font-size: 16px;
+  --mdh-line-height: 1.65;
+  --mdh-content-max-width: 48rem;
+  --mdh-sidebar-width: 16rem;
+
+  --mdh-heading-weight: 600;
+  --mdh-heading-line-height: 1.25;
+  --mdh-heading-letter-spacing: -0.011em;
+  --mdh-h1-size: 2.1em;
+  --mdh-h2-size: 1.55em;
+  --mdh-h3-size: 1.25em;
+  --mdh-h4-size: 1.08em;
+  --mdh-h5-size: 1em;
+  --mdh-h6-size: 0.92em;
+  --mdh-code-font-size: 0.875em;
+  --mdh-text-align: left;
+  --mdh-hyphens: manual;
+  --mdh-block-spacing: 1em;
+  --mdh-radius: 8px;
+  --mdh-gutter: 2rem;
+  --mdh-bar-font-size: 0.8rem;
+  --mdh-sheet-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 8px 28px rgb(0 0 0 / 0.12);
+
+  /* Physical page (overridden from the `page` configuration section). */
+  --mdh-page-width: 210mm;
+  --mdh-page-height: 297mm;
+  --mdh-page-margin-top: 20mm;
+  --mdh-page-margin-right: 18mm;
+  --mdh-page-margin-bottom: 20mm;
+  --mdh-page-margin-left: 18mm;
+
+  /* Optional colours: fall back to core colours when a theme does not define them. */
+  --mdh-color-desk: var(--mdh-color-surface);
+  --mdh-color-selection: var(--mdh-color-table-stripe);
+  --mdh-color-mark: #fff2a8;
+  --mdh-color-mark-text: #1f2328;
+  --mdh-color-focus: var(--mdh-color-accent);
+  --mdh-color-note: var(--mdh-color-link);
+  --mdh-color-tip: #1a7f37;
+  --mdh-color-important: #8250df;
+  --mdh-color-warning: #9a6700;
+  --mdh-color-caution: #cf222e;
+}
+
+/* 2. Document & typography ------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: var(--mdh-font-size);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--mdh-color-bg);
+  color: var(--mdh-color-text);
+  font-family: var(--mdh-font-body);
+  line-height: var(--mdh-line-height);
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-wrap: break-word;
+}
+
+.markdown-body {
+  text-align: var(--mdh-text-align);
+  hyphens: var(--mdh-hyphens);
+  -webkit-hyphens: var(--mdh-hyphens);
+}
+
+/* :where() keeps this rhythm rule at low specificity so components can override it. */
+.markdown-body :where(p, ul, ol, dl, blockquote, table, pre, details, figure, .mdh-code,
+  .mdh-table-wrap, .markdown-alert, .math.block) {
+  margin-top: 0;
+  margin-bottom: var(--mdh-block-spacing);
+}
+.markdown-body > :first-child { margin-top: 0; }
+.markdown-body > :last-child { margin-bottom: 0; }
+
+.markdown-body :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--mdh-font-heading);
+  font-weight: var(--mdh-heading-weight);
+  line-height: var(--mdh-heading-line-height);
+  letter-spacing: var(--mdh-heading-letter-spacing);
+  color: var(--mdh-color-heading);
+  text-align: left;
+  hyphens: manual;
+  margin: 1.6em 0 0.6em;
+  scroll-margin-top: 1.5rem;
+  text-wrap: balance;
+}
+.markdown-body h1 { font-size: var(--mdh-h1-size); margin-top: 0.5em; }
+.markdown-body h2 {
+  font-size: var(--mdh-h2-size);
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--mdh-color-border);
+}
+.markdown-body h3 { font-size: var(--mdh-h3-size); }
+.markdown-body h4 { font-size: var(--mdh-h4-size); }
+.markdown-body h5 { font-size: var(--mdh-h5-size); }
+.markdown-body h6 {
+  font-size: var(--mdh-h6-size);
+  color: var(--mdh-color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.markdown-body .header-anchor {
+  margin-left: 0.3em;
+  font-weight: 400;
+  color: var(--mdh-color-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.markdown-body :is(h1, h2, h3, h4, h5, h6):hover .header-anchor,
+.markdown-body .header-anchor:focus-visible { opacity: 1; }
+
+a {
+  hyphens: manual;
+  color: var(--mdh-color-link);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-thickness: 0.14em; }
+
+strong, b { font-weight: 700; }
+small { font-size: 0.85em; }
+sub, sup { font-size: 0.75em; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+abbr[title] { text-decoration: underline dotted; cursor: help; }
+s, del { color: var(--mdh-color-muted); }
+mark { background: var(--mdh-color-mark); color: var(--mdh-color-mark-text); padding: 0 0.15em; border-radius: 2px; }
+kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  font: 0.8em/1.3 var(--mdh-font-code);
+  color: var(--mdh-color-text);
+  background: var(--mdh-color-surface);
+  border: 1px solid var(--mdh-color-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--mdh-color-selection); }
+
+/* 3. Accessibility helpers ------------------------------------------------------------- */
+.mdh-skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--mdh-color-bg);
+  color: var(--mdh-color-link);
+  border: 2px solid var(--mdh-color-focus);
+  border-radius: var(--mdh-radius);
+  font-weight: 600;
+}
+.mdh-skip-link:focus { top: 1rem; }
+
+:focus-visible {
+  outline: 3px solid var(--mdh-color-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.mdh-print-regions { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* 4. Web view layout ----------------------------------------------------------------------- */
+.mdh-view-web { display: flex; flex-direction: column; }
+.mdh-view-web .mdh-layout {
+  flex: 1 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, var(--mdh-content-max-width));
+  grid-template-areas: 'nav' 'toc' 'content';
+  column-gap: var(--mdh-gutter);
+  width: 100%;
+  padding: 2.5rem 1.5rem 3rem;
+}
+.mdh-view-web.mdh-align-center .mdh-layout { justify-content: center; }
+.mdh-view-web .mdh-site-nav { grid-area: nav; }
+.mdh-view-web .mdh-toc { grid-area: toc; }
+.mdh-view-web .mdh-content { grid-area: content; min-width: 0; }
+
+@media (min-width: 62rem) {
+  .mdh-view-web.mdh-toc-left .mdh-layout {
+    grid-template-columns: var(--mdh-sidebar-width) minmax(0, var(--mdh-content-max-width));
+    grid-template-areas: 'toc content';
+  }
+  .mdh-view-web.mdh-toc-right .mdh-layout {
+    grid-template-columns: minmax(0, var(--mdh-content-max-width)) var(--mdh-sidebar-width);
+    grid-template-areas: 'content toc';
+  }
+  .mdh-view-web.mdh-has-nav:is(.mdh-toc-none, .mdh-toc-top) .mdh-layout {
+    grid-template-columns: var(--mdh-sidebar-width) minmax(0, var(--mdh-content-max-width));
+    grid-template-areas: 'nav toc' 'nav content';
+  }
+  .mdh-view-web.mdh-has-nav:is(.mdh-toc-left, .mdh-toc-right) .mdh-layout {
+    grid-template-columns: var(--mdh-sidebar-width) minmax(0, var(--mdh-content-max-width))
+      var(--mdh-sidebar-width);
+    grid-template-areas: 'nav content toc';
+  }
+  .mdh-view-web .mdh-toc:is(.mdh-toc-left, .mdh-toc-right) > nav,
+  .mdh-view-web .mdh-site-nav-inner {
+    position: sticky;
+    top: 1.5rem;
+    max-height: calc(100vh - 3rem);
+    overflow: auto;
+  }
+  .mdh-view-web .mdh-toc.mdh-toc-left > nav, .mdh-view-web .mdh-site-nav-inner { padding-right: 0.5rem; }
+}
+
+/* 5. Paged view: the document as a sheet of paper ------------------------------------------ */
+.mdh-view-paged { background: var(--mdh-color-desk); }
+.mdh-view-paged .mdh-layout { padding: 2.5rem var(--mdh-gutter) 4rem; }
+
+.mdh-sheet {
+  --_mt: var(--mdh-page-margin-top);
+  --_mr: var(--mdh-page-margin-right);
+  --_mb: var(--mdh-page-margin-bottom);
+  --_ml: var(--mdh-page-margin-left);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--mdh-page-width), 100%);
+  min-height: var(--mdh-page-height);
+  margin: 0 auto;
+  padding: var(--_mt) var(--_mr) var(--_mb) var(--_ml);
+  background: var(--mdh-color-bg);
+  box-shadow: var(--mdh-sheet-shadow);
+  border-radius: 2px;
+}
+.mdh-view-paged.mdh-align-left .mdh-sheet { margin-left: 0; }
+.mdh-sheet > .mdh-content { flex: 1 0 auto; min-width: 0; }
+
+/* Header and footer live in the sheet's top/bottom margins, exactly like on paper. */
+.mdh-sheet > .mdh-header {
+  display: flex;
+  align-items: flex-end;
+  height: var(--_mt);
+  margin: calc(-1 * var(--_mt)) 0 0;
+  padding: 0 0 5mm;
+  background: none;
+  color: var(--mdh-color-muted);
+  border: 0;
+}
+.mdh-sheet > .mdh-header .mdh-header-inner { width: 100%; }
+.mdh-sheet > .mdh-footer {
+  display: block;
+  height: var(--_mb);
+  margin: 0 0 calc(-1 * var(--_mb));
+  padding: 5mm 0 0;
+  background: none;
+  color: var(--mdh-color-muted);
+  border: 0;
+}
+
+/* Sidebars sit on the desk beside the sheet on wide screens, inside the sheet otherwise. */
+.mdh-sheet > :is(.mdh-toc, .mdh-site-nav) {
+  margin: 0 0 2rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--mdh-color-border);
+  border-radius: var(--mdh-radius);
+  background: var(--mdh-color-surface);
+}
+
+/* One sidebar (TOC or page navigation) fits beside an A4 sheet from 76rem; both need 92rem.
+   Below that they are shown as boxes at the top of the sheet. */
+@media screen and (min-width: 76rem) {
+  .mdh-view-paged:not(.mdh-has-nav).mdh-toc-right .mdh-layout {
+    padding-right: calc(var(--mdh-sidebar-width) + 2 * var(--mdh-gutter));
+  }
+  .mdh-view-paged:not(.mdh-has-nav).mdh-toc-left .mdh-layout,
+  .mdh-view-paged.mdh-has-nav:is(.mdh-toc-none, .mdh-toc-top) .mdh-layout {
+    padding-left: calc(var(--mdh-sidebar-width) + 2 * var(--mdh-gutter));
+  }
+  .mdh-view-paged:not(.mdh-has-nav) .mdh-sheet > .mdh-toc-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(100% + var(--mdh-gutter));
+    width: var(--mdh-sidebar-width);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .mdh-view-paged:not(.mdh-has-nav) .mdh-sheet > .mdh-toc-left,
+  .mdh-view-paged.mdh-has-nav:is(.mdh-toc-none, .mdh-toc-top) .mdh-sheet > .mdh-site-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(100% + var(--mdh-gutter));
+    width: var(--mdh-sidebar-width);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+}
+
+@media screen and (min-width: 92rem) {
+  .mdh-view-paged.mdh-has-nav:is(.mdh-toc-left, .mdh-toc-right) .mdh-layout {
+    padding-left: calc(var(--mdh-sidebar-width) + 2 * var(--mdh-gutter));
+    padding-right: calc(var(--mdh-sidebar-width) + 2 * var(--mdh-gutter));
+  }
+  .mdh-view-paged.mdh-has-nav .mdh-sheet > :is(.mdh-toc-left, .mdh-toc-right) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(100% + var(--mdh-gutter));
+    width: var(--mdh-sidebar-width);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .mdh-view-paged.mdh-has-nav .mdh-sheet > .mdh-site-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(100% + var(--mdh-gutter));
+    width: var(--mdh-sidebar-width);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+}
+
+/* Sticky contents while a sidebar sits beside the sheet. */
+@media screen and (min-width: 76rem) {
+  .mdh-view-paged .mdh-sheet > :is(.mdh-toc-left, .mdh-toc-right) > nav,
+  .mdh-view-paged .mdh-sheet > .mdh-site-nav > .mdh-site-nav-inner {
+    position: sticky;
+    top: 1.5rem;
+    max-height: calc(100vh - 3rem);
+    overflow: auto;
+  }
+}
+
+/* 6. Header, footer, page number --------------------------------------------------------- */
+.mdh-header, .mdh-footer, .mdh-running-header, .mdh-running-footer {
+  font-size: var(--mdh-bar-font-size);
+  line-height: 1.45;
+}
+.mdh-view-web .mdh-header {
+  background: var(--mdh-color-header-bg);
+  color: var(--mdh-color-header-text);
+  border-bottom: 1px solid var(--mdh-color-border);
+  padding: 0.85rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.mdh-view-web .mdh-footer {
+  background: var(--mdh-color-footer-bg);
+  color: var(--mdh-color-footer-text);
+  border-top: 1px solid var(--mdh-color-border);
+  padding: 1rem 1.5rem;
+}
+.mdh-view-web :is(.mdh-header-inner, .mdh-footer-inner) {
+  max-width: calc(var(--mdh-content-max-width) + 2 * var(--mdh-sidebar-width) + 4rem);
+  margin: 0 auto;
+}
+.mdh-view-web.mdh-align-left :is(.mdh-header-inner, .mdh-footer-inner) { margin-left: 0; }
+
+.mdh-sheet .mdh-header-inner, .mdh-running-header .mdh-header-inner {
+  padding-bottom: 2mm;
+  border-bottom: 0.5pt solid var(--mdh-color-border);
+}
+.mdh-header a, .mdh-footer a, .mdh-running-header a, .mdh-running-footer a { color: inherit; }
+
+.mdh-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  flex-wrap: wrap;
+}
+.mdh-footer-text { min-width: 0; }
+.mdh-page-number {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.mdh-pagenum-left .mdh-page-number { order: -1; margin-left: 0; margin-right: auto; }
+.mdh-pagenum-left .mdh-footer-text { margin-left: auto; }
+.mdh-pagenum-center .mdh-footer-inner { justify-content: center; }
+.mdh-pagenum-center .mdh-page-number { margin: 0 auto; }
+.mdh-pagenum-center .mdh-footer-text { flex-basis: 100%; text-align: center; }
+
+/* 7. Navigation, table of contents, pager ------------------------------------------------- */
+.mdh-toc, .mdh-site-nav { font-size: 0.875rem; line-height: 1.45; }
+.mdh-toc-title, .mdh-site-nav-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--mdh-font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mdh-color-muted);
+}
+.mdh-toc ul, .mdh-site-nav ul { list-style: none; margin: 0; padding: 0; }
+.mdh-toc ul ul { padding-left: 0.9rem; }
+.mdh-toc li, .mdh-site-nav li { margin: 0.1rem 0; }
+.mdh-toc a, .mdh-site-nav a {
+  display: block;
+  padding: 0.2rem 0.6rem;
+  color: var(--mdh-color-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
+}
+.mdh-toc a:hover, .mdh-site-nav a:hover {
+  color: var(--mdh-color-link);
+  border-left-color: var(--mdh-color-border);
+  background: var(--mdh-color-surface);
+}
+.mdh-site-nav .is-current > a {
+  color: var(--mdh-color-heading);
+  font-weight: 600;
+  border-left-color: var(--mdh-color-accent);
+}
+.mdh-view-web .mdh-toc, .mdh-view-web .mdh-site-nav { margin-bottom: 2rem; }
+.mdh-view-web .mdh-toc.mdh-toc-top {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--mdh-color-border);
+  border-radius: var(--mdh-radius);
+  background: var(--mdh-color-surface);
+}
+.mdh-toc.mdh-toc-top .mdh-toc-list { columns: 2 14rem; column-gap: 2rem; }
+.mdh-toc.mdh-toc-top .mdh-toc-list > li { break-inside: avoid; }
+
+.mdh-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+.mdh-view-paged .mdh-pager {
+  width: min(var(--mdh-page-width), 100%);
+  margin: 2rem auto 0;
+}
+.mdh-view-paged.mdh-align-left .mdh-pager { margin-left: 0; }
+.mdh-pager a {
+  flex: 0 1 48%;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--mdh-color-border);
+  border-radius: var(--mdh-radius);
+  background: var(--mdh-color-bg);
+  color: var(--mdh-color-heading);
+  text-decoration: none;
+}
+.mdh-pager a:hover { border-color: var(--mdh-color-accent); }
+.mdh-pager-next { margin-left: auto; text-align: right; }
+.mdh-pager-label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mdh-color-muted);
+}
+.mdh-pager-prev .mdh-pager-label::before { content: '\2190\00a0'; }
+.mdh-pager-next .mdh-pager-label::after { content: '\00a0\2192'; }
+.mdh-pager-title { font-weight: 600; color: var(--mdh-color-link); }
+
+/* 8. Markdown components ---------------------------------------------------------------- */
+
+/* Lists */
+.markdown-body :is(ul, ol) { padding-left: 1.6em; }
+.markdown-body li > :is(ul, ol) { margin-top: 0.25em; margin-bottom: 0; }
+.markdown-body li + li { margin-top: 0.25em; }
+.markdown-body li > p { margin-bottom: 0.5em; }
+.markdown-body li::marker { color: var(--mdh-color-muted); }
+.markdown-body ol > li::marker { font-variant-numeric: tabular-nums; }
+
+/* Task lists: the (disabled) checkbox stays in the DOM for assistive technology but is
+   drawn by li::before so it looks identical in every browser and in PDF engines. */
+.markdown-body .contains-task-list { list-style: none; padding-left: 0; }
+.markdown-body .contains-task-list .contains-task-list { padding-left: 1.6em; }
+.markdown-body .task-list-item { position: relative; list-style: none; padding-left: 1.75em; }
+.markdown-body .task-list-item-checkbox {
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 1.05em;
+  height: 1.05em;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.markdown-body .task-list-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 1.05em;
+  height: 1.05em;
+  border: 1.5px solid var(--mdh-color-muted);
+  border-radius: 0.25em;
+  background: var(--mdh-color-bg) no-repeat center / 78% 78%;
+}
+.markdown-body .task-list-item.is-checked { color: var(--mdh-color-muted); }
+.markdown-body .task-list-item.is-checked::before {
+  border-color: var(--mdh-color-accent);
+  background-color: var(--mdh-color-accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+}
+
+/* Definition lists */
+.markdown-body dt { font-weight: 600; color: var(--mdh-color-heading); margin-top: 0.75em; }
+.markdown-body dt:first-child { margin-top: 0; }
+.markdown-body dd {
+  margin: 0.2em 0 0 1.25em;
+  padding-left: 0.85em;
+  border-left: 2px solid var(--mdh-color-border);
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0.15em 1.1em;
+  color: var(--mdh-color-muted);
+  border-left: 4px solid var(--mdh-color-blockquote-border);
+}
+.markdown-body blockquote > :last-child { margin-bottom: 0; }
+.markdown-body blockquote blockquote { margin-top: 0.5em; border-left-width: 3px; }
+
+/* GitHub-style alerts */
+.markdown-body .markdown-alert {
+  --_alert: var(--mdh-color-note);
+  padding: 0.75em 1.1em;
+  border-left: 4px solid var(--_alert);
+  border-radius: 0 var(--mdh-radius) var(--mdh-radius) 0;
+  background: var(--mdh-color-surface);
+  color: var(--mdh-color-text);
+}
+.markdown-body .markdown-alert > :last-child { margin-bottom: 0; }
+.markdown-body .markdown-alert-tip { --_alert: var(--mdh-color-tip); }
+.markdown-body .markdown-alert-important { --_alert: var(--mdh-color-important); }
+.markdown-body .markdown-alert-warning { --_alert: var(--mdh-color-warning); }
+.markdown-body .markdown-alert-caution { --_alert: var(--mdh-color-caution); }
+.markdown-body .markdown-alert-title {
+  margin-bottom: 0.2em;
+  font-weight: 700;
+  color: var(--_alert);
+}
+/* A small marker in the alert colour; shape varies so colour is never the only cue. */
+.markdown-body .markdown-alert-title::before {
+  content: '';
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.5em;
+  vertical-align: 0.08em;
+  background: var(--_alert);
+  border-radius: 50%;
+}
+.markdown-body :is(.markdown-alert-warning, .markdown-alert-caution) .markdown-alert-title::before {
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+.markdown-body .markdown-alert-important .markdown-alert-title::before { border-radius: 1px; }
+
+/* Inline code */
+.markdown-body :not(pre) > code {
+  padding: 0.12em 0.36em;
+  font-family: var(--mdh-font-code);
+  font-size: var(--mdh-code-font-size);
+  color: var(--mdh-color-code-text);
+  background: var(--mdh-color-code-bg);
+  border: 1px solid var(--mdh-color-border);
+  border-radius: 0.3em;
+  overflow-wrap: anywhere;
+}
+.markdown-body a > code { color: inherit; }
+
+/* Code blocks (Pygments supplies .highlight colours) */
+.markdown-body .mdh-code {
+  position: relative;
+  border: 1px solid var(--mdh-color-border);
+  border-radius: var(--mdh-radius);
+  overflow: hidden;
+  text-align: left;
+  hyphens: none;
+}
+.markdown-body .mdh-code .highlight { margin: 0; border-radius: 0; }
+.markdown-body .mdh-code pre {
+  margin: 0;
+  padding: 1em 1.15em;
+  overflow-x: auto;
+  font-family: var(--mdh-font-code);
+  font-size: var(--mdh-code-font-size);
+  line-height: 1.6;
+  tab-size: 4;
+  background: transparent;
+}
+.markdown-body .mdh-code pre code { font: inherit; background: none; padding: 0; border: 0; }
+.markdown-body .mdh-code[data-lang] pre { padding-top: 1.6em; }
+.markdown-body .mdh-code-plain .highlight {
+  background: var(--mdh-color-code-bg);
+  color: var(--mdh-color-code-text);
+}
+.markdown-body .mdh-code-lang {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  padding: 0.2em 0.75em;
+  font-family: var(--mdh-font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mdh-color-muted);
+  background: var(--mdh-color-surface);
+  border-left: 1px solid var(--mdh-color-border);
+  border-bottom: 1px solid var(--mdh-color-border);
+  border-bottom-left-radius: var(--mdh-radius);
+  user-select: none;
+}
+.markdown-body .highlighttable { width: 100%; margin: 0; border: 0; border-spacing: 0; }
+.markdown-body .highlighttable :is(td, th) { padding: 0; border: 0; background: none; }
+.markdown-body .highlighttable tr { background: none; }
+.markdown-body .highlighttable td.linenos {
+  width: 1%;
+  border-right: 1px solid var(--mdh-color-border);
+  user-select: none;
+}
+.markdown-body .highlighttable td.linenos pre { padding-right: 0.8em; opacity: 0.7; text-align: right; }
+.markdown-body .highlighttable td.code { width: 99%; }
+.markdown-body .highlighttable .linenodiv pre { background: none; }
+
+/* Tables */
+.markdown-body .mdh-table-wrap {
+  overflow-x: auto;
+  border: var(--mdh-table-frame, 1px solid var(--mdh-color-border));
+  border-radius: var(--mdh-radius);
+}
+.markdown-body .mdh-table-wrap > table { margin: 0; border: 0; }
+.markdown-body table:not(.highlighttable) {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.94em;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  hyphens: manual;
+}
+.markdown-body table:not(.highlighttable) :is(th, td) {
+  padding: 0.55em 0.9em;
+  border-bottom: 1px solid var(--mdh-color-border);
+  vertical-align: top;
+}
+.markdown-body table:not(.highlighttable) :is(th, td) + :is(th, td) {
+  border-left: 1px solid var(--mdh-color-border);
+}
+.markdown-body table:not(.highlighttable) thead th {
+  background: var(--mdh-color-table-header-bg);
+  color: var(--mdh-color-heading);
+  font-weight: 600;
+  border-bottom: 2px solid var(--mdh-color-border);
+  white-space: nowrap;
+}
+.markdown-body table:not(.highlighttable) tbody tr:nth-child(even) {
+  background: var(--mdh-color-table-stripe);
+}
+.markdown-body table:not(.highlighttable) tbody tr:last-child > * { border-bottom: 0; }
+.markdown-body table:not(.highlighttable) caption {
+  caption-side: bottom;
+  padding: 0.5em;
+  font-size: 0.875em;
+  color: var(--mdh-color-muted);
+}
+
+/* Images and figures */
+.markdown-body img { max-width: 100%; height: auto; border-style: none; vertical-align: middle; }
+.markdown-body figure.mdh-figure { margin: 1.75em 0; text-align: center; }
+.markdown-body figure.mdh-figure img { display: block; margin: 0 auto; }
+.markdown-body figcaption {
+  margin-top: 0.6em;
+  font-size: 0.875em;
+  line-height: 1.45;
+  color: var(--mdh-color-muted);
+  text-align: center;
+}
+.markdown-body p > img:only-child { display: block; margin: 0 auto; }
+
+/* Horizontal rules */
+.markdown-body hr {
+  height: 0;
+  margin: 2.2em 0;
+  border: 0;
+  border-top: 1px solid var(--mdh-color-border);
+}
+
+/* Footnotes */
+.markdown-body .footnote-ref a {
+  padding: 0 0.1em;
+  font-size: 0.95em;
+  font-weight: 600;
+  text-decoration: none;
+}
+.markdown-body hr.footnotes-sep { width: 30%; margin: 2.5em 0 1.25em; }
+.markdown-body .footnotes {
+  font-size: 0.875em;
+  line-height: 1.5;
+  color: var(--mdh-color-muted);
+}
+.markdown-body .footnotes-list { padding-left: 1.4em; }
+.markdown-body .footnote-item > p { margin-bottom: 0.4em; }
+.markdown-body .footnote-item:target { color: var(--mdh-color-text); }
+.markdown-body .footnote-backref { text-decoration: none; margin-left: 0.15em; }
+
+/* Math (plain or MathJax) */
+.markdown-body .math.inline { font-family: var(--mdh-font-code); font-size: 0.92em; }
+.markdown-body .math.block {
+  padding: 0.6em 1em;
+  overflow-x: auto;
+  font-family: var(--mdh-font-code);
+  text-align: center;
+  background: var(--mdh-color-surface);
+  border-radius: var(--mdh-radius);
+}
+.markdown-body .math .math { padding: 0; margin: 0; background: none; font-size: 1em; }
+.markdown-body mjx-container { overflow-x: auto; overflow-y: hidden; }
+
+/* Raw HTML niceties */
+.markdown-body details {
+  padding: 0.6em 1em;
+  border: 1px solid var(--mdh-color-border);
+  border-radius: var(--mdh-radius);
+}
+.markdown-body details > summary { cursor: pointer; font-weight: 600; color: var(--mdh-color-heading); }
+.markdown-body details[open] > summary { margin-bottom: 0.6em; }
+.markdown-body details > :last-child { margin-bottom: 0; }
+
+/* 9. Small screens ------------------------------------------------------------------------ */
+@media screen and (max-width: 52rem) {
+  .mdh-view-paged .mdh-layout { padding: 0 0 2rem; }
+  .mdh-sheet {
+    --_mt: 1.5rem;
+    --_mr: 1.15rem;
+    --_mb: 1.5rem;
+    --_ml: 1.15rem;
+    width: 100%;
+    min-height: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .mdh-sheet > .mdh-header {
+    height: auto;
+    margin: calc(-1 * var(--_mt)) calc(-1 * var(--_mr)) var(--_mt) calc(-1 * var(--_ml));
+    padding: 0.8rem var(--_mr) 0 var(--_ml);
+  }
+  .mdh-sheet > .mdh-footer {
+    height: auto;
+    margin: 2rem 0 0;
+    padding: 0.75rem 0 0;
+    border-top: 1px solid var(--mdh-color-border);
+  }
+  .mdh-view-paged .mdh-pager { padding: 0 1rem; }
+}
+
+@media screen and (max-width: 40rem) {
+  :root { --mdh-h1-size: 1.8em; --mdh-h2-size: 1.4em; --mdh-h3-size: 1.18em; }
+  .mdh-view-web .mdh-layout { padding: 1.5rem 1rem 2rem; }
+  .mdh-view-web .mdh-header, .mdh-view-web .mdh-footer { padding-left: 1rem; padding-right: 1rem; }
+  .mdh-pager { flex-direction: column; }
+  .mdh-pager a { flex-basis: auto; }
+  .mdh-toc.mdh-toc-top .mdh-toc-list { columns: 1; }
+  .markdown-body .mdh-code pre { padding-left: 0.9em; padding-right: 0.9em; }
+}
+
+/* 10. Print / PDF ------------------------------------------------------------------------- */
+/* @page size, margins and page numbers are generated from the configuration. The page box
+   is painted with the theme background so tinted or dark themes have no white margins. */
+@page {
+  background: var(--mdh-color-bg);
+  @top-left {
+    font-family: var(--mdh-font-body);
+    font-size: 8.5pt;
+    color: var(--mdh-color-muted);
+    vertical-align: bottom;
+    padding-bottom: 5mm;
+  }
+  @bottom-left {
+    font-family: var(--mdh-font-body);
+    font-size: 8.5pt;
+    color: var(--mdh-color-muted);
+    vertical-align: top;
+    padding-top: 5mm;
+  }
+  @bottom-center {
+    font-family: var(--mdh-font-body);
+    font-size: 8.5pt;
+    color: var(--mdh-color-muted);
+    vertical-align: top;
+    padding-top: 5mm;
+  }
+  @bottom-right {
+    font-family: var(--mdh-font-body);
+    font-size: 8.5pt;
+    color: var(--mdh-color-muted);
+    vertical-align: top;
+    padding-top: 5mm;
+  }
+}
+
+@media print {
+  html, body.mdh-body { background: var(--mdh-color-bg); }
+  body.mdh-body { min-height: 0; display: block; }
+
+  /* Screen chrome is not part of the printed document. */
+  .mdh-skip-link, .mdh-site-nav, .mdh-toc.mdh-toc-left, .mdh-toc.mdh-toc-right, .mdh-pager,
+  .mdh-header, .mdh-footer, .markdown-body .header-anchor { display: none !important; }
+
+  .mdh-layout, .mdh-view-web .mdh-layout, .mdh-view-paged .mdh-layout {
+    display: block;
+    padding: 0;
+    width: auto;
+  }
+  .mdh-sheet {
+    display: block;
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    background: none;
+  }
+  .mdh-toc.mdh-toc-top {
+    margin: 0 0 1.5em;
+    padding: 0.8em 1em;
+    break-inside: avoid;
+  }
+
+  /* Running header / footer copies are moved into the page margins. */
+  .mdh-print-regions { display: block; }
+  .mdh-running-header { position: running(mdh-running-header); width: 100%; color: var(--mdh-color-muted); }
+  .mdh-running-footer { position: running(mdh-running-footer); color: var(--mdh-color-muted); }
+  .mdh-running-header, .mdh-running-footer { font-family: var(--mdh-font-body); font-size: 8.5pt; }
+  @supports not (position: running(mdh)) {
+    .mdh-print-regions { display: none; }
+  }
+
+  /* Pagination quality. */
+  .markdown-body p, .markdown-body li { orphans: 3; widows: 3; }
+  .markdown-body :is(h1, h2, h3, h4, h5, h6) { break-after: avoid; page-break-after: avoid; }
+  .markdown-body :is(h1, h2, h3, h4, h5, h6) + * { break-before: avoid; page-break-before: avoid; }
+  .markdown-body :is(.mdh-code, figure, img, tr, .markdown-alert, .math.block, dt, blockquote) {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .markdown-body dt { break-after: avoid; }
+  .markdown-body thead { display: table-header-group; }
+  .markdown-body tfoot { display: table-footer-group; }
+  /* Tables must fit the page: print cannot scroll. The frame moves from the wrapper to the
+     table so a table split across pages is not drawn as an empty box; wide tables
+     (classes added by the parser from the column count) get smaller text and padding, and
+     cells may wrap anywhere as a last resort instead of being cut off at the page edge. */
+  .markdown-body .mdh-table-wrap { overflow: visible; border: 0; border-radius: 0; }
+  .markdown-body :where(.mdh-table-wrap) > table:not(.highlighttable) {
+    border: var(--mdh-table-frame, 1px solid var(--mdh-color-border));
+  }
+  .markdown-body table:not(.highlighttable) :is(th, td) { overflow-wrap: anywhere; }
+  .markdown-body table:not(.highlighttable) thead th { white-space: normal; }
+  .markdown-body .mdh-table-wide > table:not(.highlighttable) { font-size: 0.8em; }
+  .markdown-body .mdh-table-wide > table:not(.highlighttable) :is(th, td) {
+    padding: 0.35em 0.45em;
+  }
+  .markdown-body .mdh-table-xwide > table:not(.highlighttable) { font-size: 0.62em; }
+  .markdown-body .mdh-table-xwide > table:not(.highlighttable) :is(th, td) {
+    padding: 0.25em 0.3em;
+  }
+
+  /* Code is wrapped instead of clipped; colours are kept (print-color-adjust above). */
+  .markdown-body .mdh-code { overflow: visible; }
+  .markdown-body .mdh-code pre { overflow: visible; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .markdown-body .math.block { overflow: visible; }
+  .markdown-body a { text-decoration-thickness: 0.05em; }
+  .markdown-body .footnote-backref { display: none; }
+  .markdown-body .task-list-item-checkbox { display: none; }
+  .markdown-body details::details-content { content-visibility: visible; display: block; }
+  .markdown-body details > summary { list-style: none; }
+}
+
+/* ---- theme: default ---- */
+/*
+ * default - clean, modern sans-serif with a crisp blue accent.
+ *
+ * Built on themes/_shared/base.css. Everything below is a CSS custom property, so any value
+ * can be overridden from the configuration (style.colors, style.font_*, style.variables).
+ * All colour pairs meet WCAG 2.1 AA contrast (checked by the test-suite).
+ */
+:root {
+  --mdh-font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --mdh-font-heading: var(--mdh-font-body);
+  --mdh-font-code: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Code', 'JetBrains Mono',
+    Menlo, Consolas, 'Liberation Mono', monospace;
+  --mdh-font-size: 16px;
+  --mdh-line-height: 1.65;
+  --mdh-content-max-width: 48rem;
+  --mdh-sidebar-width: 16rem;
+  --mdh-heading-weight: 600;
+  --mdh-radius: 8px;
+}
+
+/* Light palette (also the default). */
+:root {
+  --mdh-color-bg: #ffffff;
+  --mdh-color-surface: #f6f8fa;
+  --mdh-color-text: #1f2328;
+  --mdh-color-muted: #57606a;
+  --mdh-color-heading: #0d1117;
+  --mdh-color-link: #0a58ca;
+  --mdh-color-accent: #0a58ca;
+  --mdh-color-border: #d8dee4;
+  --mdh-color-code-bg: #f3f5f7;
+  --mdh-color-code-text: #1f2328;
+  --mdh-color-table-header-bg: #f3f5f7;
+  --mdh-color-table-stripe: #f9fafb;
+  --mdh-color-blockquote-border: #c5ced8;
+  --mdh-color-header-bg: #f6f8fa;
+  --mdh-color-header-text: #1f2328;
+  --mdh-color-footer-bg: #f6f8fa;
+  --mdh-color-footer-text: #57606a;
+  --mdh-color-desk: #e3e7ec;
+  --mdh-color-selection: #cfe2ff;
+  --mdh-color-mark: #fff2a8;
+  --mdh-color-mark-text: #1f2328;
+  --mdh-color-focus: #0a58ca;
+  --mdh-color-note: #0a58ca;
+  --mdh-color-tip: #1a7f37;
+  --mdh-color-important: #8250df;
+  --mdh-color-warning: #9a6700;
+  --mdh-color-caution: #cf222e;
+}
+
+/* Dark palette: data-theme="dark", and "auto" when the OS prefers dark on screen. */
+:root[data-theme="dark"] {
+  --mdh-color-bg: #0d1117;
+  --mdh-color-surface: #161b22;
+  --mdh-color-text: #e6edf3;
+  --mdh-color-muted: #9da7b3;
+  --mdh-color-heading: #f0f6fc;
+  --mdh-color-link: #58a6ff;
+  --mdh-color-accent: #58a6ff;
+  --mdh-color-border: #30363d;
+  --mdh-color-code-bg: #161b22;
+  --mdh-color-code-text: #e6edf3;
+  --mdh-color-table-header-bg: #161b22;
+  --mdh-color-table-stripe: #11161d;
+  --mdh-color-blockquote-border: #3d444d;
+  --mdh-color-header-bg: #161b22;
+  --mdh-color-header-text: #e6edf3;
+  --mdh-color-footer-bg: #161b22;
+  --mdh-color-footer-text: #9da7b3;
+  --mdh-color-desk: #010409;
+  --mdh-color-selection: #1f3a5f;
+  --mdh-color-mark: #5a4500;
+  --mdh-color-mark-text: #f0f6fc;
+  --mdh-color-focus: #58a6ff;
+  --mdh-color-note: #58a6ff;
+  --mdh-color-tip: #3fb950;
+  --mdh-color-important: #a371f7;
+  --mdh-color-warning: #d29922;
+  --mdh-color-caution: #f85149;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --mdh-color-bg: #0d1117;
+    --mdh-color-surface: #161b22;
+    --mdh-color-text: #e6edf3;
+    --mdh-color-muted: #9da7b3;
+    --mdh-color-heading: #f0f6fc;
+    --mdh-color-link: #58a6ff;
+    --mdh-color-accent: #58a6ff;
+    --mdh-color-border: #30363d;
+    --mdh-color-code-bg: #161b22;
+    --mdh-color-code-text: #e6edf3;
+    --mdh-color-table-header-bg: #161b22;
+    --mdh-color-table-stripe: #11161d;
+    --mdh-color-blockquote-border: #3d444d;
+    --mdh-color-header-bg: #161b22;
+    --mdh-color-header-text: #e6edf3;
+    --mdh-color-footer-bg: #161b22;
+    --mdh-color-footer-text: #9da7b3;
+    --mdh-color-desk: #010409;
+    --mdh-color-selection: #1f3a5f;
+    --mdh-color-mark: #5a4500;
+    --mdh-color-mark-text: #f0f6fc;
+    --mdh-color-focus: #58a6ff;
+    --mdh-color-note: #58a6ff;
+    --mdh-color-tip: #3fb950;
+    --mdh-color-important: #a371f7;
+    --mdh-color-warning: #d29922;
+    --mdh-color-caution: #f85149;
+  }
+}
+
+/* Flourishes */
+.markdown-body h1 { letter-spacing: -0.02em; }
+.mdh-view-paged .markdown-body > h1:first-child {
+  padding-bottom: 0.35em;
+  border-bottom: 3px solid var(--mdh-color-accent);
+}
+.markdown-body blockquote { font-style: normal; }
+
+/* Dark mode: a hairline edge keeps the sheet visible on the dark desk. */
+:root[data-theme="dark"] {
+  --mdh-sheet-shadow: 0 0 0 1px #30363d, 0 12px 32px rgb(0 0 0 / 0.5);
+}
+@media screen and (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --mdh-sheet-shadow: 0 0 0 1px #30363d, 0 12px 32px rgb(0 0 0 / 0.5);
+  }
+}
+
+/* ---- code highlighting ---- */
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #6e7681 }
+.highlight { background: #0d1117; color: #E6EDF3 }
+.highlight .c { color: #8B949E; font-style: italic } /* Comment */
+.highlight .err { color: #F85149 } /* Error */
+.highlight .esc { color: #E6EDF3 } /* Escape */
+.highlight .g { color: #E6EDF3 } /* Generic */
+.highlight .k { color: #FF7B72 } /* Keyword */
+.highlight .l { color: #A5D6FF } /* Literal */
+.highlight .n { color: #E6EDF3 } /* Name */
+.highlight .o { color: #FF7B72; font-weight: bold } /* Operator */
+.highlight .x { color: #E6EDF3 } /* Other */
+.highlight .p { color: #E6EDF3 } /* Punctuation */
+.highlight .ch { color: #8B949E; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #8B949E; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #8B949E; font-weight: bold; font-style: italic } /* Comment.Preproc */
+.highlight .cpf { color: #8B949E; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #8B949E; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #8B949E; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #FFA198; background-color: #490202 } /* Generic.Deleted */
+.highlight .ge { color: #E6EDF3; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #E6EDF3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #FFA198 } /* Generic.Error */
+.highlight .gh { color: #79C0FF; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #56D364; background-color: #0F5323 } /* Generic.Inserted */
+.highlight .go { color: #8B949E } /* Generic.Output */
+.highlight .gp { color: #8B949E } /* Generic.Prompt */
+.highlight .gs { color: #E6EDF3; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #79C0FF } /* Generic.Subheading */
+.highlight .gt { color: #FF7B72 } /* Generic.Traceback */
+.highlight .g-Underline { color: #E6EDF3; text-decoration: underline } /* Generic.Underline */
+.highlight .kc { color: #79C0FF } /* Keyword.Constant */
+.highlight .kd { color: #FF7B72 } /* Keyword.Declaration */
+.highlight .kn { color: #FF7B72 } /* Keyword.Namespace */
+.highlight .kp { color: #79C0FF } /* Keyword.Pseudo */
+.highlight .kr { color: #FF7B72 } /* Keyword.Reserved */
+.highlight .kt { color: #FF7B72 } /* Keyword.Type */
+.highlight .ld { color: #79C0FF } /* Literal.Date */
+.highlight .m { color: #A5D6FF } /* Literal.Number */
+.highlight .s { color: #A5D6FF } /* Literal.String */
+.highlight .na { color: #E6EDF3 } /* Name.Attribute */
+.highlight .nb { color: #E6EDF3 } /* Name.Builtin */
+.highlight .nc { color: #F0883E; font-weight: bold } /* Name.Class */
+.highlight .no { color: #79C0FF; font-weight: bold } /* Name.Constant */
+.highlight .nd { color: #D2A8FF; font-weight: bold } /* Name.Decorator */
+.highlight .ni { color: #FFA657 } /* Name.Entity */
+.highlight .ne { color: #F0883E; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #D2A8FF; font-weight: bold } /* Name.Function */
+.highlight .nl { color: #79C0FF; font-weight: bold } /* Name.Label */
+.highlight .nn { color: #FF7B72 } /* Name.Namespace */
+.highlight .nx { color: #E6EDF3 } /* Name.Other */
+.highlight .py { color: #79C0FF } /* Name.Property */
+.highlight .nt { color: #7EE787 } /* Name.Tag */
+.highlight .nv { color: #79C0FF } /* Name.Variable */
+.highlight .ow { color: #FF7B72; font-weight: bold } /* Operator.Word */
+.highlight .pm { color: #E6EDF3 } /* Punctuation.Marker */
+.highlight .w { color: #6E7681 } /* Text.Whitespace */
+.highlight .mb { color: #A5D6FF } /* Literal.Number.Bin */
+.highlight .mf { color: #A5D6FF } /* Literal.Number.Float */
+.highlight .mh { color: #A5D6FF } /* Literal.Number.Hex */
+.highlight .mi { color: #A5D6FF } /* Literal.Number.Integer */
+.highlight .mo { color: #A5D6FF } /* Literal.Number.Oct */
+.highlight .sa { color: #79C0FF } /* Literal.String.Affix */
+.highlight .sb { color: #A5D6FF } /* Literal.String.Backtick */
+.highlight .sc { color: #A5D6FF } /* Literal.String.Char */
+.highlight .dl { color: #79C0FF } /* Literal.String.Delimiter */
+.highlight .sd { color: #A5D6FF } /* Literal.String.Doc */
+.highlight .s2 { color: #A5D6FF } /* Literal.String.Double */
+.highlight .se { color: #79C0FF } /* Literal.String.Escape */
+.highlight .sh { color: #79C0FF } /* Literal.String.Heredoc */
+.highlight .si { color: #A5D6FF } /* Literal.String.Interpol */
+.highlight .sx { color: #A5D6FF } /* Literal.String.Other */
+.highlight .sr { color: #79C0FF } /* Literal.String.Regex */
+.highlight .s1 { color: #A5D6FF } /* Literal.String.Single */
+.highlight .ss { color: #A5D6FF } /* Literal.String.Symbol */
+.highlight .bp { color: #E6EDF3 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #D2A8FF; font-weight: bold } /* Name.Function.Magic */
+.highlight .vc { color: #79C0FF } /* Name.Variable.Class */
+.highlight .vg { color: #79C0FF } /* Name.Variable.Global */
+.highlight .vi { color: #79C0FF } /* Name.Variable.Instance */
+.highlight .vm { color: #79C0FF } /* Name.Variable.Magic */
+.highlight .il { color: #A5D6FF } /* Literal.Number.Integer.Long */
+
+/* ---- configuration overrides ---- */
+:root, :root[data-theme] {
+  --mdh-content-max-width: 48rem;
+  --mdh-sidebar-width: 16rem;
+  --mdh-page-width: 210mm;
+  --mdh-page-height: 297mm;
+  --mdh-page-margin-top: 20mm;
+  --mdh-page-margin-right: 18mm;
+  --mdh-page-margin-bottom: 20mm;
+  --mdh-page-margin-left: 18mm;
+}
+
+/* ---- print ---- */
+@page {
+  size: 210mm 297mm;
+  margin: 20mm 18mm;
+}
+@media print {
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+</style>
+</head>
+<body class="mdh-body mdh-view-web mdh-toc-left mdh-align-center">
+<a class="mdh-skip-link" href="#mdh-content">Skip to content</a>
+
+
+<div class="mdh-layout">
+
+<aside class="mdh-toc mdh-toc-left">
+<nav aria-label="Contents">
+<p class="mdh-toc-title">Contents</p>
+<ul class="mdh-toc-list">
+<li class="mdh-toc-h2"><a href="#text-formatting">Text formatting</a>
+</li>
+<li class="mdh-toc-h2"><a href="#links">Links</a>
+</li>
+<li class="mdh-toc-h2"><a href="#lists">Lists</a>
+</li>
+<li class="mdh-toc-h2"><a href="#blockquotes-and-alerts">Blockquotes and alerts</a>
+</li>
+<li class="mdh-toc-h2"><a href="#tables">Tables</a>
+</li>
+<li class="mdh-toc-h2"><a href="#code">Code</a>
+</li>
+<li class="mdh-toc-h2"><a href="#math">Math</a>
+</li>
+<li class="mdh-toc-h2"><a href="#footnotes">Footnotes</a>
+</li>
+<li class="mdh-toc-h2"><a href="#raw-html">Raw HTML</a>
+</li>
+</ul>
+</nav>
+</aside>
+<main id="mdh-content" class="mdh-content">
+<article class="mdh-article markdown-body">
+<h1 id="markdown-showcase">Markdown showcase</h1>
+<figure class="mdh-figure"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAxMjAgNDAiPjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjMDk2OWRhIi8+PHRleHQgeD0iNjAiIHk9IjI2IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+bWQyaHRtbDwvdGV4dD48L3N2Zz4K" alt="md2html logo" title="The md2html logo" loading="lazy" /><figcaption>The md2html logo</figcaption></figure>
+
+<p>This page exercises <strong>every</strong> Markdown feature supported by <em>md-html-builder</em>. Visit the
+<a href="guide/getting-started.html">getting started guide</a> for usage.</p>
+<h2 id="text-formatting">Text formatting</h2>
+<p>Plain text, <em>italic</em>, <strong>bold</strong>, <em><strong>bold italic</strong></em>, <s>strikethrough</s>, <code>inline code</code>,
+and escaped characters: *not italic*, 5 &lt; 6 &amp; 7 &gt; 3.</p>
+<p>Line one with a hard break<br />
+line two.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li>Inline: <a href="https://www.python.org" title="Python homepage">Python</a></li>
+<li>Reference: <a href="https://commonmark.org">CommonMark</a></li>
+<li>Autolinks: <a href="https://github.com">https://github.com</a> and bare <a href="http://www.example.com">www.example.com</a> or <a href="mailto:hello@example.com">hello@example.com</a></li>
+<li>Cross-page: <a href="guide/getting-started.html#installation">guide</a></li>
+</ul>
+<h2 id="lists">Lists</h2>
+<ol>
+<li>First</li>
+<li>Second
+<ul>
+<li>Nested bullet
+<ol>
+<li>Deeply nested number</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>Third</li>
+</ol>
+<ul class="contains-task-list">
+<li class="task-list-item is-checked"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> Write the parser</li>
+<li class="task-list-item is-checked"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> Add syntax highlighting</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Take over the world</li>
+</ul>
+<dl>
+<dt>Term</dt>
+<dd>A definition list entry.</dd>
+</dl>
+<h2 id="blockquotes-and-alerts">Blockquotes and alerts</h2>
+<blockquote>
+<p>A quote.</p>
+<blockquote>
+<p>A nested quote.</p>
+</blockquote>
+</blockquote>
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title">Note</p>
+<p>GitHub-style alerts are supported.</p>
+</div>
+<div class="markdown-alert markdown-alert-warning">
+<p class="markdown-alert-title">Warning</p>
+<p>Be careful out there.</p>
+</div>
+<h2 id="tables">Tables</h2>
+<div class="mdh-table-wrap" data-columns="3">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Feature</th>
+<th style="text-align:center">Supported</th>
+<th style="text-align:right">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Tables</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:right">with alignment</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>code</code></td>
+<td style="text-align:center">yes</td>
+<td style="text-align:right">inline <strong>formatting</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">Pipes | …</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:right">escaped</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="code">Code</h2>
+<div class="mdh-code" data-lang="python"><span class="mdh-code-lang">python</span><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Greeter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Say hello."""</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">'Hello, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">!'</span>
+</code></pre></div>
+</div>
+<div class="mdh-code" data-lang="javascript"><span class="mdh-code-lang">javascript</span><div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">add</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`2 + 3 = </span><span class="si">${</span><span class="nx">add</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<div class="mdh-code" data-lang="bash"><span class="mdh-code-lang">bash</span><div class="highlight"><pre><span></span><code>md2html<span class="w"> </span>docs/<span class="w"> </span>-o<span class="w"> </span>site/<span class="w"> </span>--toc<span class="w"> </span>left<span class="w"> </span>--page-numbers
+</code></pre></div>
+</div>
+<div class="mdh-code" data-lang="json"><span class="mdh-code-lang">json</span><div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w"> </span><span class="nt">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"auto"</span><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="mdh-code mdh-code-plain" data-lang="unknown-language"><span class="mdh-code-lang">unknown-language</span><div class="highlight"><pre><span></span><code>Unknown languages fall back to plain text.
+</code></pre></div>
+</div>
+<div class="mdh-code mdh-code-plain"><div class="highlight"><pre><span></span><code>Indented code blocks work too.
+</code></pre></div>
+</div>
+<h2 id="math">Math</h2>
+<p>Inline math <span class="math inline">E = mc^2</span> and a block:</p>
+<div class="math block">
+\int_0^1 x^2 \, dx = \frac{1}{3}
+</div>
+<h2 id="footnotes">Footnotes</h2>
+<p>Here is a footnote reference<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> and another<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+<h2 id="raw-html">Raw HTML</h2>
+<details>
+<summary>Click to expand</summary>
+<p>Raw HTML passes through unless safe mode is enabled.</p>
+</details>
+<hr />
+<p>The end.</p>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>The footnote text. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Footnotes can contain <em>formatting</em> too. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+</article>
+
+</main>
+</div>
+
+</body>
+</html>

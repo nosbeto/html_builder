@@ -1,0 +1,4 @@
+name: minimal
+description: Monochrome, airy and typographic; colour is reserved for code.
+code_style: xcode
+code_style_dark: github-dark
